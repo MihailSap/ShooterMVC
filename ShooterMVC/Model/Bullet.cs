@@ -13,7 +13,7 @@ namespace ShooterMVC
 
         public Bullet(Texture2D tex, BulletData data) : base(tex, data.Position)
         {
-            Speed = 600; 
+            Speed = 600;
             RotationAngle = data.Rotation;
             Direction = new Vector2((float)Math.Cos(RotationAngle), (float)Math.Sin(RotationAngle));
             Lifespan = 2;

@@ -14,10 +14,10 @@ namespace ShooterMVC
         public static readonly int[,] tiles = {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1},
-            {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-            {1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-            {1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1},
+            {1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1},
+            {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+            {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+            {1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         };
@@ -56,6 +56,56 @@ namespace ShooterMVC
                 for (int y = leftTile; y <= rightTile; y++)
                     if (tiles[x, y] != 0)
                         yield return Colliders[x, y];
+        }
+
+        public static List<Point> FindPath(Point start, Point end)
+        {
+            int[,] directions = new int[,]
+            {
+            { 0, 1 },  // Right
+            { 1, 0 },  // Down
+            { 0, -1 }, // Left
+            { -1, 0 }  // Up
+            };
+
+            Queue<Point> queue = new Queue<Point>();
+            Dictionary<Point, Point> cameFrom = new Dictionary<Point, Point>();
+            queue.Enqueue(start);
+            cameFrom[start] = start;
+
+            while (queue.Count > 0)
+            {
+                Point current = queue.Dequeue();
+                if (current == end)
+                    break;
+
+                for (int i = 0; i < directions.GetLength(0); i++)
+                {
+                    Point neighbor = new Point(current.X + directions[i, 0], current.Y + directions[i, 1]);
+
+                    if (neighbor.X >= 0 && neighbor.X < tiles.GetLength(1) &&
+                        neighbor.Y >= 0 && neighbor.Y < tiles.GetLength(0) &&
+                        tiles[neighbor.Y, neighbor.X] == 0 && !cameFrom.ContainsKey(neighbor))
+                    {
+                        queue.Enqueue(neighbor);
+                        cameFrom[neighbor] = current;
+                    }
+                }
+            }
+
+            List<Point> path = new List<Point>();
+            if (cameFrom.ContainsKey(end))
+            {
+                Point current = end;
+                while (current != start)
+                {
+                    path.Add(current);
+                    current = cameFrom[current];
+                }
+                path.Reverse();
+            }
+
+            return path;
         }
 
         public void Draw(SpriteBatch spriteBatch, Texture2D texture1, Texture2D texture2)

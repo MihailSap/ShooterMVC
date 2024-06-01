@@ -12,7 +12,7 @@ namespace ShooterMVC
         private const int maxAmmo = 5;
         private readonly float cooldown;
         private float cooldownLeft;
-        
+
         public readonly float ReloadTime;
         public bool IsReloading { get; private set; }
         public int AmmoCount { get; private set; }
@@ -32,7 +32,7 @@ namespace ShooterMVC
 
         private void Reload()
         {
-            if (IsReloading) 
+            if (IsReloading)
                 return;
             cooldownLeft = ReloadTime;
             IsReloading = true;
@@ -89,7 +89,7 @@ namespace ShooterMVC
                     if (movement.X > 0)
                         newPosition.X = collider.Left - Offset;
                     else
-                        newPosition.X = collider.Right + Offset; 
+                        newPosition.X = collider.Right + Offset;
                 }
 
                 if (verticalCheckRect.Intersects(collider))
@@ -97,7 +97,7 @@ namespace ShooterMVC
                     if (movement.Y > 0)
                         newPosition.Y = collider.Top - Offset;
                     else
-                        newPosition.Y = collider.Bottom + Offset; 
+                        newPosition.Y = collider.Bottom + Offset;
                 }
             }
             currentPosition = newPosition;
@@ -113,7 +113,7 @@ namespace ShooterMVC
         { // Обработка нажатий клавиш отдельно
             if (Input.LeftMouseClicked) // MouseDown - для выстрела при каждом нажатии
             {
-                if (cooldownLeft > 0 || IsReloading) 
+                if (cooldownLeft > 0 || IsReloading)
                     return;
                 AmmoCount--;
                 if (AmmoCount > 0)

@@ -39,7 +39,7 @@ namespace ShooterMVC
             GetTextures();
             _graphics.ApplyChanges();
             Bounds = new(Map.tiles.GetLength(1) * Map.TileSize, Map.tiles.GetLength(0) * Map.TileSize);
-            
+
             var center = new Vector2(Bounds.X / 2, Bounds.Y / 2);
             _player = new Player(_texturePlayer, center);
             _map = new Map(_graphics);
@@ -58,7 +58,7 @@ namespace ShooterMVC
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed 
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
                 || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             UpdateGameTime(gameTime);
@@ -67,7 +67,7 @@ namespace ShooterMVC
             EnemyView.Update(_player, Bounds);
             BulletView.Update(EnemyView.EnemyList);
             CoinMethods.Update(_player, Bounds);
-            if (_player.IsDead) 
+            if (_player.IsDead)
                 Restart();
         }
 
@@ -85,7 +85,7 @@ namespace ShooterMVC
             base.Draw(gameTime);
         }
 
-        
+
         public void Restart()
         {
             BulletView.Reset();

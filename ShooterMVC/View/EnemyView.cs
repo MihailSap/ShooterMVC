@@ -5,12 +5,13 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace ShooterMVC
 {
     internal class EnemyView
     {
-        public static List<Enemy> EnemyList { get; } = new(); //
+        public static List<Enemy> EnemyList { get; } = new();
         public static Texture2D texture;
         private static float spawnCooldown;
         private static float spawnTime;
@@ -20,7 +21,7 @@ namespace ShooterMVC
         public static void Init(Texture2D tex)
         {
             texture = tex;
-            spawnCooldown = 2f; // Настройка кол-ва
+            spawnCooldown = 1f; // Настройка кол-ва
             spawnTime = spawnCooldown;
             random = new Random();
             _padding = texture.Width / 2;
@@ -41,12 +42,11 @@ namespace ShooterMVC
             for (int y = 0; y < mapHeight; y++)
                 for (int x = 0; x < mapWidth; x++)
                     if (Map.tiles[y, x] == 0)
-                        zeroCells.Add(new Vector2(x * Map.TileSize, y * Map.TileSize));
+                        zeroCells.Add(new Vector2(x * Map.TileSize + Map.TileSize / 2, y * Map.TileSize + Map.TileSize / 2));
 
             var randomIndex = random.Next(zeroCells.Count);
             return zeroCells[randomIndex];
         }
-
 
         public static void Update(Player player, Point Bounds)
         {

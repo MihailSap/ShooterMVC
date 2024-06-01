@@ -15,7 +15,7 @@ namespace ShooterMVC
 
         public static void Reset() => Bullets.Clear();
 
-        public static void AddProjectile(BulletData data) 
+        public static void AddProjectile(BulletData data)
             => Bullets.Add(new Bullet(_texture, data));
 
         public static void Draw(SpriteBatch _spriteBatch)
