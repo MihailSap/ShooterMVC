@@ -14,13 +14,22 @@ namespace ShooterMVC
         public float RotationAngle { get; set; }
         public float Scale { get; set; } = 1f;
 
+        /*public Rectangle GetRectangleBounds(Vector2 position)
+        {
+            return new Rectangle(
+                (int)(position.X - 20) /* правая граница */ //,
+                //(int)(position.Y - 20) /* нижняя граница */,
+                //_texture.Width - (20 / 2) /* левая граница */,
+                //_texture.Height - (20 / 2) /* верхняя граница */
+                //);
+        //}*/
         public Rectangle GetRectangleBounds(Vector2 position)
         {
             return new Rectangle(
-                (int)(position.X - 20) /* правая граница */,
-                (int)(position.Y - 20) /* нижняя граница */,
-                _texture.Width - (20 / 2) /* левая граница */,
-                _texture.Height - (20 / 2) /* верхняя граница */
+                (int)(position.X - 20) /* правая граница Ф */,
+                (int)(position.Y - 20) /* нижняя граница Ф */,
+                _texture.Width - 50 /* левая граница Ф */,
+                _texture.Height - 50 /* верхняя граница */
                 );
         }
 

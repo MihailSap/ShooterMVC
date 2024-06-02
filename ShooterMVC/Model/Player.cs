@@ -50,7 +50,7 @@ namespace ShooterMVC
         {
             foreach (var enemy in enemies)
             {
-                if (enemy.IsAlive && (currentPosition - enemy.currentPosition).Length() < 25)
+                if (enemy.IsAlive && (currentPosition - enemy.currentPosition).Length() < 60)
                 {
                     IsDead = true;
                     break;
@@ -65,7 +65,7 @@ namespace ShooterMVC
             else if (IsReloading)
                 IsReloading = false;
 
-            UpdatePosition();
+            MoveWithCollisions();
             RotateTowardsMouse();
             Fire();
             CheckCollisionWithEnemies(enemy);
@@ -74,7 +74,7 @@ namespace ShooterMVC
                 Reload();
         }
 
-        private void UpdatePosition()
+        private void MoveWithCollisions()
         {
             var movement = Input.GetPlayerDirection();
             var newPosition = currentPosition + (movement * Game1.Time);
@@ -87,17 +87,17 @@ namespace ShooterMVC
                 if (horizontalCheckRect.Intersects(collider))
                 {
                     if (movement.X > 0)
-                        newPosition.X = collider.Left - Offset;
+                        newPosition.X = collider.Left - 25; /* отскок влево Ф */
                     else
-                        newPosition.X = collider.Right + Offset;
+                        newPosition.X = collider.Right + 20; /* отскок вправо Ф */
                 }
 
                 if (verticalCheckRect.Intersects(collider))
                 {
                     if (movement.Y > 0)
-                        newPosition.Y = collider.Top - Offset;
+                        newPosition.Y = collider.Top - 30; /* отскок вверх Ф */
                     else
-                        newPosition.Y = collider.Bottom + Offset;
+                        newPosition.Y = collider.Bottom + 25; /* отскок вниз Ф */
                 }
             }
             currentPosition = newPosition;

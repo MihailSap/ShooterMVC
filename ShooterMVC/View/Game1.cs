@@ -96,10 +96,10 @@ namespace ShooterMVC
 
         public void GetTextures()
         {
-            _texturePlayer = Content.Load<Texture2D>("player");
-            _textureBullet = Content.Load<Texture2D>("bullet");
-            _textureEnemy = Content.Load<Texture2D>("enemy");
-            _textureExp = Content.Load<Texture2D>("coin1");
+            _texturePlayer = Content.Load<Texture2D>("big-player-rotated");
+            _textureBullet = Content.Load<Texture2D>("big-bullet");
+            _textureEnemy = Content.Load<Texture2D>("big-enemy");
+            _textureExp = Content.Load<Texture2D>("big-coin");
             _textureTile1 = Content.Load<Texture2D>("tile11");
             _textureTile2 = Content.Load<Texture2D>("tile22");
         }
