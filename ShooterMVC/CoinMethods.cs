@@ -8,13 +8,13 @@ namespace ShooterMVC
 {
     internal class CoinMethods
     {
-        private static List<Coin> coins = new();
+        private static List<ModelCoin> coins = new();
         private static Texture2D texture;
         private static SpriteFont spriteFont;
         private static Vector2 textPosition;
         private static string coinsCount;
 
-        public static void Init(Texture2D texture, Point Bounds, ContentManager Content)
+        public static void Init(Texture2D texture, ContentManager Content)
         {
             CoinMethods.texture = texture;
             spriteFont = Content.Load<SpriteFont>("font");
@@ -46,6 +46,7 @@ namespace ShooterMVC
 
         public static void Reset() => coins.Clear();
 
-        public static void GetExperience(Vector2 pos) => coins.Add(new Coin(texture, pos));
+        public static void GetExperience(Vector2 position) 
+            => coins.Add(new ModelCoin(texture, position));
     }
 }

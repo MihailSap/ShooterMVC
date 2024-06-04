@@ -6,9 +6,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace ShooterMVC
 {
-    internal class Player : Sprite
+    internal class Player : Sprite // В Model
     {
-        private const float Offset = 20f;
         private const int maxAmmo = 5;
         private readonly float cooldown;
         private float cooldownLeft;
@@ -30,7 +29,7 @@ namespace ShooterMVC
 
         public void GetExperience() => Experience += 1;
 
-        private void Reload()
+        private void Reload() // В Controller?
         {
             if (IsReloading)
                 return;
@@ -58,7 +57,7 @@ namespace ShooterMVC
             }
         }
 
-        public void Update(List<Enemy> enemy, Point bounds)
+        public void Update(List<Enemy> enemy)
         {
             if (cooldownLeft > 0)
                 cooldownLeft -= Game1.Time;
@@ -82,7 +81,7 @@ namespace ShooterMVC
             var horizontalCheckRect = GetRectangleBounds(new(newPosition.X, currentPosition.Y));
             var verticalCheckRect = GetRectangleBounds(new(currentPosition.X, newPosition.Y));
 
-            foreach (var collider in Map.GetNearestColliders(playerRectangle))
+            foreach (var collider in ModelMap.GetNearestColliders(playerRectangle))
             {
                 if (horizontalCheckRect.Intersects(collider))
                 {
@@ -103,13 +102,13 @@ namespace ShooterMVC
             currentPosition = newPosition;
         }
 
-        private void RotateTowardsMouse()
+        private void RotateTowardsMouse() // В Controller
         {
             var toMouse = Input.MousePosition - currentPosition;
             RotationAngle = (float)Math.Atan2(toMouse.Y, toMouse.X);
         }
 
-        private void Fire()
+        private void Fire() // В Controller
         { // Обработка нажатий клавиш отдельно
             if (Input.LeftMouseClicked) // MouseDown - для выстрела при каждом нажатии
             {
@@ -120,13 +119,7 @@ namespace ShooterMVC
                     cooldownLeft = cooldown;
                 else
                     Reload();
-
-                var projectileData = new BulletData
-                {
-                    Position = currentPosition,
-                    Rotation = RotationAngle,
-                };
-                BulletView.AddProjectile(projectileData);
+                ModelBullet.CreateBullet(Tuple.Create(currentPosition, RotationAngle));
             }
         }
     }

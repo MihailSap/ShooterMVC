@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace ShooterMVC
 {
-    internal class Coin(Texture2D tex, Vector2 pos) : Sprite(tex, pos)
+    internal class ModelCoin(Texture2D tex, Vector2 pos) : Sprite(tex, pos) // Сразу в Model
     {
         public float Lifespan { get; private set; } = 5f;
 

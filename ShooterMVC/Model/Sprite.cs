@@ -5,7 +5,7 @@ using SharpDX.MediaFoundation;
 
 namespace ShooterMVC
 {
-    public class Sprite // перенести view
+    public class Sprite // перенести view (Model?)
     {
         protected readonly Texture2D _texture;
         protected readonly Vector2 centerRotate;
@@ -13,16 +13,14 @@ namespace ShooterMVC
         public int Speed { get; set; } //
         public float RotationAngle { get; set; }
         public float Scale { get; set; } = 1f;
-
-        /*public Rectangle GetRectangleBounds(Vector2 position)
+        public Sprite(Texture2D texture, Vector2 position)
         {
-            return new Rectangle(
-                (int)(position.X - 20) /* правая граница */ //,
-                //(int)(position.Y - 20) /* нижняя граница */,
-                //_texture.Width - (20 / 2) /* левая граница */,
-                //_texture.Height - (20 / 2) /* верхняя граница */
-                //);
-        //}*/
+            _texture = texture;
+            currentPosition = position;
+            centerRotate = new Vector2(texture.Width / 2, texture.Height / 2);
+            Speed = 300;
+        }
+
         public Rectangle GetRectangleBounds(Vector2 position)
         {
             return new Rectangle(
@@ -33,15 +31,7 @@ namespace ShooterMVC
                 );
         }
 
-        public Sprite(Texture2D texture, Vector2 position)
-        {
-            _texture = texture;
-            currentPosition = position;
-            centerRotate = new Vector2(texture.Width / 2, texture.Height / 2);
-            Speed = 300;
-        }
-
-        public virtual void Draw(SpriteBatch _spriteBatch) //
+        public virtual void Draw(SpriteBatch _spriteBatch) // Во View
         {
             _spriteBatch.Draw(_texture, currentPosition, null, Color.White, RotationAngle, centerRotate, 1, SpriteEffects.None, 1);
         }

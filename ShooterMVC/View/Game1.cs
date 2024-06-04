@@ -13,15 +13,12 @@ namespace ShooterMVC
 
         private static Point Bounds;
 
-        private Map _map;
+        private ModelMap _map;
         private Player _player;
 
         private Texture2D _texturePlayer; // В отдельный класс GameView или в представлении
         private Texture2D _textureBullet;
-        private Texture2D _textureEnemy;
         private Texture2D _textureExp;
-        private Texture2D _textureTile1;
-        private Texture2D _textureTile2;
 
         public Game1()
         {
@@ -29,7 +26,6 @@ namespace ShooterMVC
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            //_graphics.IsFullScreen = true; // Вывод во весь экран
             _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
         }
@@ -38,16 +34,17 @@ namespace ShooterMVC
         {
             GetTextures();
             _graphics.ApplyChanges();
-            Bounds = new(Map.tiles.GetLength(1) * Map.TileSize, Map.tiles.GetLength(0) * Map.TileSize);
+            Bounds = new(ModelMap.Tiles.GetLength(1) * ModelMap.TileSize, ModelMap.Tiles.GetLength(0) * ModelMap.TileSize);
 
             var center = new Vector2(Bounds.X / 2, Bounds.Y / 2);
             _player = new Player(_texturePlayer, center);
-            _map = new Map(_graphics);
+            _map = new ModelMap(_graphics);
 
-            EnemyView.Init(_textureEnemy);
-            BulletView.Init(_textureBullet);
-            BulletInterface.Init(_textureBullet);
-            CoinMethods.Init(_textureExp, Bounds, Content);
+            EnemyView.Init(Content);
+            ModelBullet.Init(_textureBullet);
+
+
+            CoinMethods.Init(_textureExp, Content);
             base.Initialize();
         }
 
@@ -62,10 +59,16 @@ namespace ShooterMVC
                 || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             UpdateGameTime(gameTime);
-            _player.Update(EnemyView.EnemyList, Bounds);
+            _player.Update(EnemyView.EnemyList);
             Input.Update();
-            EnemyView.Update(_player, Bounds);
-            BulletView.Update(EnemyView.EnemyList);
+            EnemyView.Update(_player);
+
+
+            //BulletView.Update(EnemyView.EnemyList);
+            ModelBullet.Update(EnemyView.EnemyList);
+
+
+
             CoinMethods.Update(_player, Bounds);
             if (_player.IsDead)
                 Restart();
@@ -75,11 +78,12 @@ namespace ShooterMVC
         {
             GraphicsDevice.Clear(Color.Bisque);
             _spriteBatch.Begin();
-            _map.Draw(_spriteBatch, _textureTile1, _textureTile2);
+            ViewBullet.Draw(_spriteBatch, ModelBullet.Bullets);
+            ViewBulletCounter.Draw(_player, _spriteBatch, Content);
+            ViewMap.Draw(_spriteBatch, Content, _map.Target, _map.GetTiles(), _map.GetTileSize());
+
             _player.Draw(_spriteBatch);
             EnemyView.Draw(_spriteBatch);
-            BulletView.Draw(_spriteBatch);
-            BulletInterface.Draw(_player, _spriteBatch);
             CoinMethods.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
@@ -88,7 +92,7 @@ namespace ShooterMVC
 
         public void Restart()
         {
-            BulletView.Reset();
+            ModelBullet.Reset();
             EnemyView.Reset();
             _player.Reset(Bounds);
             CoinMethods.Reset();
@@ -98,10 +102,7 @@ namespace ShooterMVC
         {
             _texturePlayer = Content.Load<Texture2D>("big-player-rotated");
             _textureBullet = Content.Load<Texture2D>("big-bullet");
-            _textureEnemy = Content.Load<Texture2D>("big-enemy");
             _textureExp = Content.Load<Texture2D>("big-coin");
-            _textureTile1 = Content.Load<Texture2D>("tile11");
-            _textureTile2 = Content.Load<Texture2D>("tile22");
         }
 
         private static void UpdateGameTime(GameTime gameTime) => Time = (float)gameTime.ElapsedGameTime.TotalSeconds;
