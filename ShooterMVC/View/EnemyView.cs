@@ -34,7 +34,7 @@ namespace ShooterMVC
                 EnemyList.Add(new Enemy(texture, Enemy.GetRandomPosition()));
             }
 
-            EnemyList.ForEach(enemy => enemy.Update(player));
+            EnemyList.ForEach(enemy => enemy.UpdatePath(player));
             EnemyList.RemoveAll((enemy) => !enemy.IsAlive);
         }
 

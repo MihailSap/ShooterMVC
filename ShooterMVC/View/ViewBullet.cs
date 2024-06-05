@@ -10,6 +10,6 @@ namespace ShooterMVC
     internal class ViewBullet // только отрисовка, контроллер передает
     {
         public static void Draw(SpriteBatch _spriteBatch, List<ModelBullet> Bullets) // View
-            => Bullets.ForEach((projectile) => projectile.Draw(_spriteBatch));
+            => Bullets.ForEach((bullet) => bullet.Draw(_spriteBatch));
     }
 }

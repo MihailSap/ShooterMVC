@@ -13,7 +13,8 @@ namespace ShooterMVC
         public static List<ModelBullet> Bullets { get; } = new();
         private static Texture2D _texture; // маленькая часть лабиринта
 
-        public ModelBullet(Texture2D tex, Tuple<Vector2, float> positionAndRotation) : base(tex, positionAndRotation.Item1)
+        public ModelBullet(Texture2D tex, Tuple<Vector2, float> positionAndRotation) 
+            : base(tex, positionAndRotation.Item1)
         {
             Speed = 1200;
             RotationAngle = positionAndRotation.Item2;

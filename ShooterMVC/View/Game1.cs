@@ -7,7 +7,6 @@ namespace ShooterMVC
     public class Game1 : Game
     {
         public static float Time { get; private set; }
-
         private GraphicsDeviceManager _graphics; // В отдельный класс GameView
         private SpriteBatch _spriteBatch;
 
@@ -64,7 +63,6 @@ namespace ShooterMVC
             EnemyView.Update(_player);
 
 
-            //BulletView.Update(EnemyView.EnemyList);
             ModelBullet.Update(EnemyView.EnemyList);
 
 
@@ -84,6 +82,9 @@ namespace ShooterMVC
 
             _player.Draw(_spriteBatch);
             EnemyView.Draw(_spriteBatch);
+            //Enemy.Draw(_spriteBatch);
+
+
             CoinMethods.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
