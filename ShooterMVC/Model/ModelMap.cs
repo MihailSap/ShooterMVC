@@ -6,7 +6,7 @@ using System;
 
 namespace ShooterMVC
 {
-    internal class ModelMap // В Model
+    internal class ModelMap 
     {
         public readonly RenderTarget2D Target;
         public const int TileSize = 128;

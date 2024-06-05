@@ -39,23 +39,10 @@ namespace ShooterMVC.Controller
             }
         }
 
-
-
-
-        /*public static Vector2 GetRandomPosition()
+        public static void Destroy(ModelEnemy enemy)
         {
-            var random = new Random();
-            var mapHeight = ModelMap.Tiles.GetLength(0);
-            var mapWidth = ModelMap.Tiles.GetLength(1);
-
-            var zeroCells = new List<Vector2>();
-            for (int y = 0; y < mapHeight; y++)
-                for (int x = 0; x < mapWidth; x++)
-                    if (ModelMap.Tiles[y, x] == 0)
-                        zeroCells.Add(new Vector2(x * ModelMap.TileSize + ModelMap.TileSize / 2, y * ModelMap.TileSize + ModelMap.TileSize / 2));
-
-            var randomIndex = random.Next(zeroCells.Count);
-            return zeroCells[randomIndex];
-        }*/
+            enemy.IsAlive = false;
+            ModelCoin.GetExperience(enemy.currentPosition);
+        }
     }
 }

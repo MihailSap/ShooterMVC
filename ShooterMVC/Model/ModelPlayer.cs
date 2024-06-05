@@ -36,22 +36,6 @@ namespace ShooterMVC
             Experience = 0;
         }
 
-        public void Update(List<ModelEnemy> enemy)
-        {
-            if (cooldownLeft > 0)
-                cooldownLeft -= Game1.Time;
-            else if (IsReloading)
-                IsReloading = false;
-
-            MoveWithCollisions();
-            CheckCollisionWithEnemies(enemy);
-
-            ControllerPlayer.RotateToMouse(this);
-            ControllerPlayer.Fire(this);
-            if (ControllerPlayer.RightMouseClicked)
-                ControllerPlayer.Reload(this);
-        }
-
         private void CheckCollisionWithEnemies(List<ModelEnemy> enemies)
         {
             foreach (var enemy in enemies)
@@ -91,6 +75,22 @@ namespace ShooterMVC
                 }
             }
             currentPosition = newPosition;
+        }
+
+        public void Update(List<ModelEnemy> enemy)
+        {
+            if (cooldownLeft > 0)
+                cooldownLeft -= Game1.Time;
+            else if (IsReloading)
+                IsReloading = false;
+
+            MoveWithCollisions();
+            CheckCollisionWithEnemies(enemy);
+
+            ControllerPlayer.RotateToMouse(this);
+            ControllerPlayer.Fire(this);
+            if (ControllerPlayer.RightMouseClicked)
+                ControllerPlayer.Reload(this);
         }
     }
 }

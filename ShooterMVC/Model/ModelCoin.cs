@@ -16,27 +16,26 @@ namespace ShooterMVC
         public static Vector2 textPosition;
         public static string coinsCount;
 
-        public void Update()
+        public static void Init(ContentManager Content)
         {
-            Lifespan -= Game1.Time;
-            Scale = 0.33f + (Lifespan / 5f * 0.66f);
+            texture = Content.Load<Texture2D>("big-coin"); 
+            spriteFont = Content.Load<SpriteFont>("font");
         }
+
+        public static void Reset() => coins.Clear();
 
         public void GetCollected() => Lifespan = 0;
 
-
-
-        public static void Init(Texture2D texture, ContentManager Content)
-        {
-            ModelCoin.texture = texture;
-            spriteFont = Content.Load<SpriteFont>("font");
-        }
+        public static void GetExperience(Vector2 position)
+            => coins.Add(new ModelCoin(texture, position));
 
         public static void Update(ModelPlayer player, Point Bounds)
         {
             foreach (var experience in coins)
             {
-                experience.Update();
+                experience.Lifespan -= Game1.Time;
+                experience.Scale = 0.33f + (experience.Lifespan / 5f * 0.66f);
+
                 if ((experience.currentPosition - player.currentPosition).Length() < 50)
                 {
                     experience.GetCollected();
@@ -49,10 +48,5 @@ namespace ShooterMVC
             var textWidth = spriteFont.MeasureString(coinsCount).X / 2;
             textPosition = new Vector2(Bounds.X - textWidth - 32, 14);
         }
-
-        public static void Reset() => coins.Clear();
-
-        public static void GetExperience(Vector2 position)
-            => coins.Add(new ModelCoin(texture, position));
     }
 }

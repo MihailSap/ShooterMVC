@@ -10,13 +10,9 @@ namespace ShooterMVC
         private GraphicsDeviceManager _graphics; // В отдельный класс GameView
         private SpriteBatch _spriteBatch;
         private static Point Bounds;
-
         private ModelMap _map;
         private ModelPlayer _player;
-
         private Texture2D _texturePlayer; // В отдельный класс GameView или в представлении
-        private Texture2D _textureBullet;
-        private Texture2D _textureExp;
 
         public Game1()
         {
@@ -30,7 +26,7 @@ namespace ShooterMVC
 
         protected override void Initialize()
         {
-            GetTextures();
+            _texturePlayer = Content.Load<Texture2D>("big-player-rotated");
             _graphics.ApplyChanges();
             Bounds = new(ModelMap.Tiles.GetLength(1) * ModelMap.TileSize, ModelMap.Tiles.GetLength(0) * ModelMap.TileSize);
 
@@ -39,18 +35,13 @@ namespace ShooterMVC
             _map = new ModelMap(_graphics);
 
             ModelEnemy.Init(Content);
-            ModelBullet.Init(_textureBullet);
-            ModelCoin.Init(_textureExp, Content);
-
-            ViewBulletCounter.Init(_textureBullet);
+            ModelBullet.Init(Content);
+            ModelCoin.Init(Content);
 
             base.Initialize();
         }
 
-        protected override void LoadContent()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-        }
+        protected override void LoadContent() => _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         protected override void Update(GameTime gameTime)
         {
@@ -74,15 +65,17 @@ namespace ShooterMVC
             GraphicsDevice.Clear(Color.Bisque);
             _spriteBatch.Begin();
 
-            ViewBullet.Draw(_spriteBatch, ModelBullet.Bullets);
-            //ViewBulletCounter.Draw(_player, _spriteBatch, Content);
             ViewMap.Draw(_spriteBatch, Content, _map.Target, _map.GetTiles(), _map.GetTileSize());
-            ViewEnemy.Draw(_spriteBatch, ModelEnemy.EnemyList);
-            ViewPlayer.Draw(_player, _spriteBatch);
-            ViewCoin.Draw(_spriteBatch, ModelCoin.spriteFont,
-                ModelCoin.coinsCount, ModelCoin.textPosition, ModelCoin.coins);
+            ViewBullet.Draw(_spriteBatch, ModelBullet.Bullets, Content);
+            ViewEnemy.Draw(_spriteBatch, ModelEnemy.EnemyList, Content);
 
-            ViewBulletCounter.Draw(_player, _spriteBatch);
+
+            ViewBulletCounter.Draw(_player, _spriteBatch, Content);
+
+
+            ViewPlayer.Draw(_player, _spriteBatch, Content);
+            ViewCoin.Draw(_spriteBatch,
+                ModelCoin.coinsCount, ModelCoin.textPosition, ModelCoin.coins, Content);
 
             _spriteBatch.End();
             base.Draw(gameTime);
@@ -95,13 +88,6 @@ namespace ShooterMVC
             ModelEnemy.Reset();
             _player.Reset(Bounds);
             ModelCoin.Reset();
-        }
-
-        public void GetTextures()
-        {
-            _texturePlayer = Content.Load<Texture2D>("big-player-rotated");
-            _textureBullet = Content.Load<Texture2D>("big-bullet");
-            _textureExp = Content.Load<Texture2D>("big-coin");
         }
 
         private static void UpdateGameTime(GameTime gameTime) => Time = (float)gameTime.ElapsedGameTime.TotalSeconds;

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ShooterMVC.Controller;
 using System;
 using System.Collections.Generic;
 
@@ -22,27 +24,7 @@ namespace ShooterMVC
             Lifespan = 2;
         }
 
-        public void UpdatePosition()
-        {
-            var newPosition = currentPosition + (Direction * Speed * Game1.Time);
-            var bulletRectangle = GetRectangleBounds(newPosition);
-            var horizontalCheckRect = GetRectangleBounds(new(newPosition.X, currentPosition.Y));
-            var verticalCheckRect = GetRectangleBounds(new(currentPosition.X, newPosition.Y));
-            foreach (var collider in ModelMap.GetNearestColliders(bulletRectangle))
-                if (horizontalCheckRect.Intersects(collider) || verticalCheckRect.Intersects(collider))
-                    Destroy();
-            currentPosition = newPosition;
-        }
-
-        public void Destroy() => Lifespan = 0;
-
-        public void Update()
-        {
-            UpdatePosition();
-            Lifespan -= Game1.Time;
-        }
-
-        public static void Init(Texture2D tex) => _texture = tex;
+        public static void Init(ContentManager Content) => _texture = Content.Load<Texture2D>("big-bullet");
 
         public static void Reset() => Bullets.Clear();
 
@@ -53,20 +35,20 @@ namespace ShooterMVC
         {
             foreach (var bullet in Bullets)
             {
-                bullet.UpdatePosition();
+                ControllerBullet.UpdatePosition(bullet);
                 bullet.Lifespan -= Game1.Time;
 
                 foreach (var enemy in enemies)
                 {
                     if (enemy.IsAlive && (bullet.currentPosition - enemy.currentPosition).Length() < 32)
                     {
-                        enemy.Destroy();
-                        bullet.Destroy();
+                        ControllerEnemy.Destroy(enemy);
+                        ControllerBullet.Destroy(bullet);
                         break;
                     }
                 }
             }
-            Bullets.RemoveAll((p) => p.Lifespan <= 0);
+            Bullets.RemoveAll((bullet) => bullet.Lifespan <= 0);
         }
     }
 }
