@@ -9,11 +9,10 @@ namespace ShooterMVC
         public static float Time { get; private set; }
         private GraphicsDeviceManager _graphics; // В отдельный класс GameView
         private SpriteBatch _spriteBatch;
-
         private static Point Bounds;
 
         private ModelMap _map;
-        private Player _player;
+        private ModelPlayer _player;
 
         private Texture2D _texturePlayer; // В отдельный класс GameView или в представлении
         private Texture2D _textureBullet;
@@ -36,14 +35,15 @@ namespace ShooterMVC
             Bounds = new(ModelMap.Tiles.GetLength(1) * ModelMap.TileSize, ModelMap.Tiles.GetLength(0) * ModelMap.TileSize);
 
             var center = new Vector2(Bounds.X / 2, Bounds.Y / 2);
-            _player = new Player(_texturePlayer, center);
+            _player = new ModelPlayer(_texturePlayer, center);
             _map = new ModelMap(_graphics);
 
-            EnemyView.Init(Content);
+            ModelEnemy.Init(Content);
             ModelBullet.Init(_textureBullet);
+            ModelCoin.Init(_textureExp, Content);
 
+            ViewBulletCounter.Init(_textureBullet);
 
-            CoinMethods.Init(_textureExp, Content);
             base.Initialize();
         }
 
@@ -58,16 +58,13 @@ namespace ShooterMVC
                 || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             UpdateGameTime(gameTime);
-            _player.Update(EnemyView.EnemyList);
-            Input.Update();
-            EnemyView.Update(_player);
 
+            _player.Update(ModelEnemy.EnemyList);
+            ControllerPlayer.Update();
+            ModelEnemy.Update(_player);
+            ModelBullet.Update(ModelEnemy.EnemyList);
+            ModelCoin.Update(_player, Bounds);
 
-            ModelBullet.Update(EnemyView.EnemyList);
-
-
-
-            CoinMethods.Update(_player, Bounds);
             if (_player.IsDead)
                 Restart();
         }
@@ -76,16 +73,17 @@ namespace ShooterMVC
         {
             GraphicsDevice.Clear(Color.Bisque);
             _spriteBatch.Begin();
+
             ViewBullet.Draw(_spriteBatch, ModelBullet.Bullets);
-            ViewBulletCounter.Draw(_player, _spriteBatch, Content);
+            //ViewBulletCounter.Draw(_player, _spriteBatch, Content);
             ViewMap.Draw(_spriteBatch, Content, _map.Target, _map.GetTiles(), _map.GetTileSize());
+            ViewEnemy.Draw(_spriteBatch, ModelEnemy.EnemyList);
+            ViewPlayer.Draw(_player, _spriteBatch);
+            ViewCoin.Draw(_spriteBatch, ModelCoin.spriteFont,
+                ModelCoin.coinsCount, ModelCoin.textPosition, ModelCoin.coins);
 
-            _player.Draw(_spriteBatch);
-            EnemyView.Draw(_spriteBatch);
-            //Enemy.Draw(_spriteBatch);
+            ViewBulletCounter.Draw(_player, _spriteBatch);
 
-
-            CoinMethods.Draw(_spriteBatch);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -94,9 +92,9 @@ namespace ShooterMVC
         public void Restart()
         {
             ModelBullet.Reset();
-            EnemyView.Reset();
+            ModelEnemy.Reset();
             _player.Reset(Bounds);
-            CoinMethods.Reset();
+            ModelCoin.Reset();
         }
 
         public void GetTextures()

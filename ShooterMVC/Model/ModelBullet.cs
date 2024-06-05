@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ShooterMVC
 {
-    internal class ModelBullet : Sprite // B Model
+    internal class ModelBullet : ModelSprite // B Model
     {
         public Vector2 Direction { get; set; }
         public float Lifespan { get; set; }
@@ -49,7 +49,7 @@ namespace ShooterMVC
         public static void CreateBullet(Tuple<Vector2, float> positionAndRotation)
             => Bullets.Add(new ModelBullet(_texture, positionAndRotation));
 
-        public static void Update(List<Enemy> enemies)
+        public static void Update(List<ModelEnemy> enemies)
         {
             foreach (var bullet in Bullets)
             {
