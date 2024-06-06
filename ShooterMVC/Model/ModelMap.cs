@@ -44,7 +44,7 @@ namespace ShooterMVC
             }
         }
 
-        public static IEnumerable<Rectangle> GetNearestColliders(Rectangle sprite) // В Sprite
+        public static IEnumerable<Rectangle> GetNearestColliders(Rectangle sprite)
         {
             var leftTile = (int)Math.Floor((float)sprite.Left / TileSize);
             var rightTile = (int)Math.Ceiling((float)sprite.Right / TileSize) - 1;

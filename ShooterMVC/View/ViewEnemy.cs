@@ -7,12 +7,11 @@ namespace ShooterMVC
 {
     internal class ViewEnemy
     {
-        public static void Draw(SpriteBatch _spriteBatch, List<ModelEnemy> EnemyList, ContentManager Content)
+        public static void Draw(SpriteBatch _spriteBatch, List<ModelEnemy> EnemyList)
         {
-            var enemyTexture = Content.Load<Texture2D>("big-enemy");
             foreach (var enemy in EnemyList)
             {
-                _spriteBatch.Draw(enemyTexture, enemy.currentPosition,
+                _spriteBatch.Draw(enemy._texture, enemy.currentPosition,
                     null, Color.White, enemy.RotationAngle, enemy.centerRotate, 1, SpriteEffects.None, 1);
             }
         }

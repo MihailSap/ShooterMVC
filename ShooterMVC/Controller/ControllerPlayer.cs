@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace ShooterMVC
 {
@@ -13,13 +14,29 @@ namespace ShooterMVC
         public static bool RightMouseClicked { get; private set; }
         private const float Speed = 500;
 
-        public static void Update()
+        public static void MoveWithCollisions(ModelPlayer player)
         {
-            LeftMouseClicked = Mouse.GetState().LeftButton == ButtonState.Pressed;
-            RightMouseClicked = Mouse.GetState().RightButton == ButtonState.Pressed 
-                && (_lastMouseState.RightButton == ButtonState.Released);
+            var movement = GetPlayerDirection();
+            var newPosition = player.currentPosition + (movement * Game1.Time);
+            var playerRectangle = player.GetRectangleBounds(newPosition);
+            var horizontalCheckRect = player.GetRectangleBounds(new(newPosition.X, player.currentPosition.Y));
+            var verticalCheckRect = player.GetRectangleBounds(new(player.currentPosition.X, newPosition.Y));
 
-            _lastMouseState = Mouse.GetState();
+            foreach (var collider in ModelMap.GetNearestColliders(playerRectangle))
+            {
+                if (horizontalCheckRect.Intersects(collider))
+                    newPosition.X = movement.X > 0 ? collider.Left - 25 : collider.Right + 20;
+                if (verticalCheckRect.Intersects(collider))
+                    newPosition.Y = movement.Y > 0 ? collider.Top - 30 : collider.Bottom + 25;
+            }
+            player.currentPosition = newPosition;
+        }
+
+        public static void CheckCollisionWithEnemies(List<ModelEnemy> enemies, ModelPlayer player)
+        {
+            foreach (var enemy in enemies)
+                if (enemy.IsAlive && (player.currentPosition - enemy.currentPosition).Length() < 60)
+                    player.IsDead = true;
         }
 
         public static void RotateToMouse(ModelPlayer player)
@@ -39,14 +56,14 @@ namespace ShooterMVC
                     player.cooldownLeft = player.cooldown;
                 else
                     Reload(player);
+
                 ModelBullet.CreateBullet(Tuple.Create(player.currentPosition, player.RotationAngle));
             }
         }
 
         public static void Reload(ModelPlayer player)
         {
-            if (player.IsReloading)
-                return;
+            if (player.IsReloading) return;
             player.cooldownLeft = player.ReloadTime;
             player.IsReloading = true;
             player.AmmoCount = player.maxAmmo;
@@ -65,6 +82,31 @@ namespace ShooterMVC
             if (keyboardState.IsKeyDown(Keys.D))
                 Direction.X += Speed;
             return Direction;
+        }
+
+        public static void GetMouseState()
+        {
+            var mouseState = Mouse.GetState();
+            LeftMouseClicked = mouseState.LeftButton == ButtonState.Pressed;
+            RightMouseClicked = mouseState.RightButton == ButtonState.Pressed
+                && (_lastMouseState.RightButton == ButtonState.Released);
+            _lastMouseState = mouseState;
+        }
+
+        public static void Update(List<ModelEnemy> enemy, ModelPlayer player)
+        {
+            if (player.cooldownLeft > 0)
+                player.cooldownLeft -= Game1.Time;
+            else if (player.IsReloading)
+                player.IsReloading = false;
+
+            GetMouseState();
+            MoveWithCollisions(player);
+            CheckCollisionWithEnemies(enemy, player);
+            RotateToMouse(player);
+            Fire(player);
+            if (RightMouseClicked)
+                Reload(player);
         }
     }
 }

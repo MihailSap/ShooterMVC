@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace ShooterMVC.Controller
 {
@@ -20,5 +21,32 @@ namespace ShooterMVC.Controller
         }
 
         public static void Destroy(ModelBullet bullet) => bullet.Lifespan = 0;
+
+        public void CreateBullet(Tuple<Vector2, float> positionAndRotation, 
+            List<ModelBullet> bullets)
+        {
+            if (ControllerPlayer.LeftMouseClicked)
+                bullets.Add(new ModelBullet(bullets[0]._texture, positionAndRotation));
+        }
+
+        public static void Update(List<ModelEnemy> enemies, List<ModelBullet> Bullets)
+        {
+            foreach (var bullet in Bullets)
+            {
+                ControllerBullet.UpdatePosition(bullet);
+                bullet.Lifespan -= Game1.Time;
+
+                foreach (var enemy in enemies)
+                {
+                    if (enemy.IsAlive && (bullet.currentPosition - enemy.currentPosition).Length() < 32)
+                    {
+                        ControllerEnemy.Destroy(enemy);
+                        ControllerBullet.Destroy(bullet);
+                        break;
+                    }
+                }
+            }
+            Bullets.RemoveAll((bullet) => bullet.Lifespan <= 0);
+        }
     }
 }

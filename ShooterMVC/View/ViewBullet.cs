@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace ShooterMVC
 {
-    internal class ViewBullet // только отрисовка, контроллер передает
+    internal class ViewBullet 
     {
         public static void Draw(SpriteBatch _spriteBatch, List<ModelBullet> Bullets, ContentManager Content)
         {

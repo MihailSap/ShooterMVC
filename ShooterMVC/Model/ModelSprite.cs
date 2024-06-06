@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using SharpDX.MediaFoundation;
 
 namespace ShooterMVC
 {
     public class ModelSprite
     {
-        public readonly Texture2D _texture;
+        public Texture2D _texture;
         public readonly Vector2 centerRotate;
         public Vector2 currentPosition { get; set; }
         public int Speed { get; set; }

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.Direct3D9;
+
 namespace ShooterMVC.Controller
 {
     internal class ControllerEnemy
@@ -43,6 +46,13 @@ namespace ShooterMVC.Controller
         {
             enemy.IsAlive = false;
             ModelCoin.GetExperience(enemy.currentPosition);
+        }
+
+        public static void Update(List<ModelEnemy> enemies, ModelPlayer player)
+        {
+            ModelEnemy.SpawnEnemy(player);
+            enemies.ForEach(enemy => UpdatePath(player, enemy));
+            enemies.RemoveAll((enemy) => !enemy.IsAlive);
         }
     }
 }

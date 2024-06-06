@@ -13,8 +13,8 @@ internal class ModelEnemy : ModelSprite
     public Queue<Vector2> path;
     public float updatePathTimer;
     public static Texture2D texture;
-    private static float spawnCooldown;
-    private static float spawnTime;
+    public static float spawnCooldown;
+    public static float spawnTime;
 
     public ModelEnemy(Texture2D tex, Vector2 pos) : base(tex, pos)
     {
@@ -22,13 +22,10 @@ internal class ModelEnemy : ModelSprite
         IsAlive = true;
         path = new Queue<Vector2>();
         updatePathTimer = 0f;
+        spawnTime = spawnCooldown = 1f;
     }
 
-    public static void Init(ContentManager Content)
-    {
-        texture = Content.Load<Texture2D>("big-enemy");
-        spawnTime = spawnCooldown = 1f; // Настройка кол-ва
-    }
+    public static void SetTextureToModel(Texture2D tex) => texture = tex;
 
     public static void Reset()
     {
@@ -42,7 +39,7 @@ internal class ModelEnemy : ModelSprite
         var mapHeight = ModelMap.Tiles.GetLength(0);
         var mapWidth = ModelMap.Tiles.GetLength(1);
         var tileSize = ModelMap.TileSize;
-        var minDistance = 3 * tileSize; // минимальное допустимое расстояние в пикселях
+        var minDistance = 3 * tileSize;
         var zeroCells = new List<Vector2>();
 
         for (int y = 0; y < mapHeight; y++)
@@ -62,7 +59,7 @@ internal class ModelEnemy : ModelSprite
         return zeroCells[randomIndex];
     }
 
-    public static void Update(ModelPlayer player)
+    public static void SpawnEnemy(ModelPlayer player)
     {
         spawnTime -= Game1.Time;
         if (spawnTime <= 0)
@@ -70,8 +67,5 @@ internal class ModelEnemy : ModelSprite
             spawnTime += spawnCooldown;
             EnemyList.Add(new ModelEnemy(texture, GetRandomPosition(player.currentPosition)));
         }
-
-        EnemyList.ForEach(enemy => ControllerEnemy.UpdatePath(player, enemy));
-        EnemyList.RemoveAll((enemy) => !enemy.IsAlive);
     }
 }

@@ -8,12 +8,12 @@ using System.Collections.Generic;
 
 namespace ShooterMVC
 {
-    internal class ModelBullet : ModelSprite // B Model
+    internal class ModelBullet : ModelSprite
     {
         public Vector2 Direction { get; set; }
         public float Lifespan { get; set; }
         public static List<ModelBullet> Bullets { get; } = new();
-        private static Texture2D _texture; // маленькая часть лабиринта
+        private static Texture2D texture;
 
         public ModelBullet(Texture2D tex, Tuple<Vector2, float> positionAndRotation) 
             : base(tex, positionAndRotation.Item1)
@@ -24,31 +24,11 @@ namespace ShooterMVC
             Lifespan = 2;
         }
 
-        public static void Init(ContentManager Content) => _texture = Content.Load<Texture2D>("big-bullet");
+        public static void SetTextureToModel(Texture2D tex) => texture = tex;
 
         public static void Reset() => Bullets.Clear();
 
         public static void CreateBullet(Tuple<Vector2, float> positionAndRotation)
-            => Bullets.Add(new ModelBullet(_texture, positionAndRotation));
-
-        public static void Update(List<ModelEnemy> enemies)
-        {
-            foreach (var bullet in Bullets)
-            {
-                ControllerBullet.UpdatePosition(bullet);
-                bullet.Lifespan -= Game1.Time;
-
-                foreach (var enemy in enemies)
-                {
-                    if (enemy.IsAlive && (bullet.currentPosition - enemy.currentPosition).Length() < 32)
-                    {
-                        ControllerEnemy.Destroy(enemy);
-                        ControllerBullet.Destroy(bullet);
-                        break;
-                    }
-                }
-            }
-            Bullets.RemoveAll((bullet) => bullet.Lifespan <= 0);
-        }
+            => Bullets.Add(new ModelBullet(texture, positionAndRotation));
     }
 }
