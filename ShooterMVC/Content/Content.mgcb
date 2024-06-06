@@ -23,7 +23,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:big-bullet.png;big-bullet
+/build:big-bullet.png;bullet
 
 #begin big-enemy.png
 /importer:TextureImporter
@@ -35,7 +35,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:big-enemy.png;big-enemy
+/build:big-enemy.png;enemy
 
 #begin big-player-rotated.png
 /importer:TextureImporter
@@ -47,7 +47,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:big-player-rotated.png;big-player-rotated
+/build:big-player-rotated.png;player
 
 #begin coin-big.png
 /importer:TextureImporter
@@ -59,7 +59,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:coin-big.png;coin-bigg
+/build:coin-big.png;coin
 
 #begin font.spritefont
 /importer:FontDescriptionImporter
@@ -78,5 +78,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:tile11.png
+/build:tile11.png;tile
 

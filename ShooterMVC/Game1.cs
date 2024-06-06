@@ -35,7 +35,7 @@ namespace ShooterMVC
         {
             graphics.ApplyChanges();
 
-            SetTextures();
+            SetContent();
             bounds = new(ModelMap.Tiles.GetLength(1) * ModelMap.TileSize, ModelMap.Tiles.GetLength(0) * ModelMap.TileSize);
             var center = new Vector2(bounds.X / 2, bounds.Y / 2);
             player = new ModelPlayer(texturePlayer, center);
@@ -82,14 +82,14 @@ namespace ShooterMVC
             base.Draw(gameTime);
         }
 
-        public void SetTextures()
+        public void SetContent()
         {
-            texturePlayer = Content.Load<Texture2D>("big-player-rotated");
-            textureEnemy = Content.Load<Texture2D>("big-enemy");
-            textureBullet = Content.Load<Texture2D>("big-bullet");
-            textureCoin = Content.Load<Texture2D>("coin-bigg");
+            texturePlayer = Content.Load<Texture2D>("player");
+            textureBullet = Content.Load<Texture2D>("bullet");
+            textureEnemy = Content.Load<Texture2D>("enemy");
+            textureCoin = Content.Load<Texture2D>("coin");
+            textureTile = Content.Load<Texture2D>("tile");
             spriteFont = Content.Load<SpriteFont>("font");
-            textureTile = Content.Load<Texture2D>("tile11");
         }
 
         public void Restart()
