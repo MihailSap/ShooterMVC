@@ -96,7 +96,8 @@ namespace ShooterMVC
             var x = (int)(position.Y / ModelMap.TileSize);
             var y = (int)(position.X / ModelMap.TileSize);
 
-            if (x < 0 || x >= ModelMap.Tiles.GetLength(0) || y < 0 || y >= ModelMap.Tiles.GetLength(1))
+            if (x < 0 || x >= ModelMap.Tiles.GetLength(0) 
+                || y < 0 || y >= ModelMap.Tiles.GetLength(1))
                 return false;
 
             return ModelMap.Tiles[x, y] == 0;

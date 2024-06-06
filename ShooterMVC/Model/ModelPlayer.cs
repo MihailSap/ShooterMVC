@@ -6,8 +6,8 @@ namespace ShooterMVC
     internal class ModelPlayer : ModelSprite
     {
         public int maxAmmo = 5;
-        public readonly float cooldownBetweenFire; // ???
-        public float cooldownBeforeFire; // ???
+        public readonly float cooldownBetweenFire;
+        public float cooldownBeforeFire;
 
         public readonly float ReloadTime;
         public bool IsReloading { get; set; } 
