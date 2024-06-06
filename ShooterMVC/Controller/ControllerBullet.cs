@@ -1,23 +1,21 @@
-﻿using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace ShooterMVC.Controller
+namespace ShooterMVC
 {
     internal class ControllerBullet
     {
         public static void UpdatePosition(ModelBullet bullet)
         {
-            var newPosition = bullet.currentPosition + (bullet.Direction * bullet.Speed * Game1.Time);
+            var newPosition = bullet.CurrentPosition + (bullet.Direction * bullet.Speed * Game1.Time);
             var bulletRectangle = bullet.GetRectangleBounds(newPosition);
-            var horizontalCheckRect = bullet.GetRectangleBounds(new(newPosition.X, bullet.currentPosition.Y));
-            var verticalCheckRect = bullet.GetRectangleBounds(new(bullet.currentPosition.X, newPosition.Y));
+            var horizontalCheckRect = bullet.GetRectangleBounds(new(newPosition.X, bullet.CurrentPosition.Y));
+            var verticalCheckRect = bullet.GetRectangleBounds(new(bullet.CurrentPosition.X, newPosition.Y));
             foreach (var collider in ModelMap.GetNearestColliders(bulletRectangle))
                 if (horizontalCheckRect.Intersects(collider) || verticalCheckRect.Intersects(collider))
                     Destroy(bullet);
-            bullet.currentPosition = newPosition;
+            bullet.CurrentPosition = newPosition;
         }
 
         public static void Destroy(ModelBullet bullet) => bullet.Lifespan = 0;
@@ -26,7 +24,7 @@ namespace ShooterMVC.Controller
             List<ModelBullet> bullets)
         {
             if (ControllerPlayer.LeftMouseClicked)
-                bullets.Add(new ModelBullet(bullets[0]._texture, positionAndRotation));
+                bullets.Add(new ModelBullet(bullets[0].Texture, positionAndRotation));
         }
 
         public static void Update(List<ModelEnemy> enemies, List<ModelBullet> Bullets)
@@ -38,7 +36,7 @@ namespace ShooterMVC.Controller
 
                 foreach (var enemy in enemies)
                 {
-                    if (enemy.IsAlive && (bullet.currentPosition - enemy.currentPosition).Length() < 32)
+                    if (enemy.IsAlive && (bullet.CurrentPosition - enemy.CurrentPosition).Length() < 32)
                     {
                         ControllerEnemy.Destroy(enemy);
                         ControllerBullet.Destroy(bullet);

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
 namespace ShooterMVC
@@ -35,7 +34,7 @@ namespace ShooterMVC
                 experience.Lifespan -= Game1.Time;
                 experience.Scale = 0.33f + (experience.Lifespan / 5f * 0.66f);
 
-                if ((experience.currentPosition - player.currentPosition).Length() < 50)
+                if ((experience.CurrentPosition - player.CurrentPosition).Length() < 50)
                 {
                     experience.GetCollected();
                     player.GetExperience();

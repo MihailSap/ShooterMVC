@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace ShooterMVC
@@ -8,8 +7,8 @@ namespace ShooterMVC
     {
         public static void Draw(ModelPlayer player, SpriteBatch _spriteBatch)
         {
-            _spriteBatch.Draw(player._texture, player.currentPosition, 
-                null, Color.White, player.RotationAngle, player.centerRotate, 1, SpriteEffects.None, 1);
+            _spriteBatch.Draw(player.Texture, player.CurrentPosition, 
+                null, Color.White, player.RotationAngle, player.CenterRotate, 1, SpriteEffects.None, 1);
         }
     }
 }

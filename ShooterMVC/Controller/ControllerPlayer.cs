@@ -17,10 +17,10 @@ namespace ShooterMVC
         public static void MoveWithCollisions(ModelPlayer player)
         {
             var movement = GetPlayerDirection();
-            var newPosition = player.currentPosition + (movement * Game1.Time);
+            var newPosition = player.CurrentPosition + (movement * Game1.Time);
             var playerRectangle = player.GetRectangleBounds(newPosition);
-            var horizontalCheckRect = player.GetRectangleBounds(new(newPosition.X, player.currentPosition.Y));
-            var verticalCheckRect = player.GetRectangleBounds(new(player.currentPosition.X, newPosition.Y));
+            var horizontalCheckRect = player.GetRectangleBounds(new(newPosition.X, player.CurrentPosition.Y));
+            var verticalCheckRect = player.GetRectangleBounds(new(player.CurrentPosition.X, newPosition.Y));
 
             foreach (var collider in ModelMap.GetNearestColliders(playerRectangle))
             {
@@ -29,19 +29,19 @@ namespace ShooterMVC
                 if (verticalCheckRect.Intersects(collider))
                     newPosition.Y = movement.Y > 0 ? collider.Top - 30 : collider.Bottom + 25;
             }
-            player.currentPosition = newPosition;
+            player.CurrentPosition = newPosition;
         }
 
         public static void CheckCollisionWithEnemies(List<ModelEnemy> enemies, ModelPlayer player)
         {
             foreach (var enemy in enemies)
-                if (enemy.IsAlive && (player.currentPosition - enemy.currentPosition).Length() < 60)
+                if (enemy.IsAlive && (player.CurrentPosition - enemy.CurrentPosition).Length() < 60)
                     player.IsDead = true;
         }
 
         public static void RotateToMouse(ModelPlayer player)
         {
-            var toMouse = MousePosition - player.currentPosition;
+            var toMouse = MousePosition - player.CurrentPosition;
             player.RotationAngle = (float)Math.Atan2(toMouse.Y, toMouse.X);
         }
 
@@ -57,7 +57,7 @@ namespace ShooterMVC
                 else
                     Reload(player);
 
-                ModelBullet.CreateBullet(Tuple.Create(player.currentPosition, player.RotationAngle));
+                ModelBullet.CreateBullet(Tuple.Create(player.CurrentPosition, player.RotationAngle));
             }
         }
 

@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using SharpDX.Direct3D9;
 
-namespace ShooterMVC.Controller
+namespace ShooterMVC
 {
     internal class ControllerEnemy
     {
@@ -15,8 +11,8 @@ namespace ShooterMVC.Controller
             enemy.updatePathTimer -= Game1.Time;
             if (enemy.updatePathTimer <= 0)
             {
-                enemy.path = ModelBFS.GetPath(enemy.currentPosition, player.currentPosition);
-                enemy.updatePathTimer = 0.5f; // Обновление пути каждую секунду
+                enemy.path = ModelBFS.GetPath(enemy.CurrentPosition, player.CurrentPosition);
+                enemy.updatePathTimer = 0.5f;
             }
             FollowThePath(enemy);
         }
@@ -26,17 +22,17 @@ namespace ShooterMVC.Controller
             if (enemy.path.Count > 0)
             {
                 var nextPosition = enemy.path.Peek();
-                if (Vector2.Distance(enemy.currentPosition, nextPosition) < 4)
+                if (Vector2.Distance(enemy.CurrentPosition, nextPosition) < 4)
                 {
                     enemy.path.Dequeue();
-                    enemy.currentPosition = nextPosition;
+                    enemy.CurrentPosition = nextPosition;
                 }
 
                 if (enemy.path.Count > 0)
                 {
                     nextPosition = enemy.path.Peek();
-                    var direction = Vector2.Normalize(nextPosition - enemy.currentPosition);
-                    enemy.currentPosition += direction * enemy.Speed * Game1.Time;
+                    var direction = Vector2.Normalize(nextPosition - enemy.CurrentPosition);
+                    enemy.CurrentPosition += direction * enemy.Speed * Game1.Time;
                     enemy.RotationAngle = (float)Math.Atan2(direction.Y, direction.X);
                 }
             }
@@ -45,7 +41,7 @@ namespace ShooterMVC.Controller
         public static void Destroy(ModelEnemy enemy)
         {
             enemy.IsAlive = false;
-            ModelCoin.GetExperience(enemy.currentPosition);
+            ModelCoin.GetExperience(enemy.CurrentPosition);
         }
 
         public static void Update(List<ModelEnemy> enemies, ModelPlayer player)

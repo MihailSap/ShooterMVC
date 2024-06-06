@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace ShooterMVC
 {
@@ -32,7 +29,7 @@ namespace ShooterMVC
         public void Reset(Point Bounds)
         {
             IsDead = false;
-            currentPosition = new Vector2(Bounds.X / 2, Bounds.Y / 2);
+            CurrentPosition = new Vector2(Bounds.X / 2, Bounds.Y / 2);
             Experience = 0;
         }
     }

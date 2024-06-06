@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using SharpDX.Direct3D9;
-using ShooterMVC.Controller;
 
 namespace ShooterMVC
 {
@@ -67,7 +65,7 @@ namespace ShooterMVC
             spriteBatch.Begin();
 
             ViewMap.Draw(spriteBatch, Content, map.Target, map.GetTiles(), map.GetTileSize());
-            ViewBullet.Draw(spriteBatch, ModelBullet.Bullets, Content);
+            ViewBullet.Draw(spriteBatch, ModelBullet.Bullets);
             ViewEnemy.Draw(spriteBatch, ModelEnemy.EnemyList);
             ViewBulletCounter.Draw(player, spriteBatch, textureBullet);
             ViewPlayer.Draw(player, spriteBatch);
