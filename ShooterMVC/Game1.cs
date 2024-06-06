@@ -87,7 +87,7 @@ namespace ShooterMVC
             texturePlayer = Content.Load<Texture2D>("big-player-rotated");
             textureEnemy = Content.Load<Texture2D>("big-enemy");
             textureBullet = Content.Load<Texture2D>("big-bullet");
-            textureCoin = Content.Load<Texture2D>("big-coin");
+            textureCoin = Content.Load<Texture2D>("coin-bigg");
             spriteFont = Content.Load<SpriteFont>("font");
             textureTile = Content.Load<Texture2D>("tile11");
         }
