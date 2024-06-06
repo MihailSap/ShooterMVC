@@ -38,10 +38,10 @@ namespace ShooterMVC
             }
         }
 
-        public static void Destroy(ModelEnemy enemy)
+        public static void Kill(ModelEnemy enemy)
         {
             enemy.IsAlive = false;
-            ModelCoin.GetExperience(enemy.CurrentPosition);
+            ModelCoin.SetExperienceToPlayer(enemy.CurrentPosition);
         }
 
         public static void Update(List<ModelEnemy> enemies, ModelPlayer player)

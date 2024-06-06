@@ -25,7 +25,7 @@ namespace ShooterMVC
 
         public static void Reset() => Bullets.Clear();
 
-        public static void CreateBullet(Tuple<Vector2, float> positionAndRotation)
-            => Bullets.Add(new ModelBullet(texture, positionAndRotation));
+        public static void CreateBullet(Tuple<Vector2, float> bulletData)
+            => Bullets.Add(new ModelBullet(texture, bulletData));
     }
 }

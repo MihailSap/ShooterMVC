@@ -48,7 +48,7 @@ namespace ShooterMVC
                     if (ModelMap.Tiles[y, x] == 0)
                     {
                         var cellCenter = new Vector2(x * tileSize + tileSize / 2, y * tileSize + tileSize / 2);
-                        if (Vector2.Distance(cellCenter, playerPosition) >= minDistance)
+                        if (Vector2.Distance(cellCenter, playerPosition) > minDistance)
                             zeroCells.Add(cellCenter);
                     }
                 }

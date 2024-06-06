@@ -12,7 +12,7 @@ namespace ShooterMVC
         public static Vector2 MousePosition => Mouse.GetState().Position.ToVector2();
         public static bool LeftMouseClicked { get; private set; }
         public static bool RightMouseClicked { get; private set; }
-        private const float Speed = 500;
+        private const float playerSpeed = 500;
 
         public static void MoveWithCollisions(ModelPlayer player)
         {
@@ -49,11 +49,11 @@ namespace ShooterMVC
         { 
             if (LeftMouseClicked)
             {
-                if (player.cooldownLeft > 0 || player.IsReloading)
+                if (player.cooldownBeforeFire > 0 || player.IsReloading)
                     return;
                 player.AmmoCount--;
                 if (player.AmmoCount > 0)
-                    player.cooldownLeft = player.cooldown;
+                    player.cooldownBeforeFire = player.cooldownBetweenFire;
                 else
                     Reload(player);
 
@@ -64,7 +64,7 @@ namespace ShooterMVC
         public static void Reload(ModelPlayer player)
         {
             if (player.IsReloading) return;
-            player.cooldownLeft = player.ReloadTime;
+            player.cooldownBeforeFire = player.ReloadTime;
             player.IsReloading = true;
             player.AmmoCount = player.maxAmmo;
         }
@@ -74,13 +74,13 @@ namespace ShooterMVC
             var keyboardState = Keyboard.GetState();
             Direction = Vector2.Zero;
             if (keyboardState.IsKeyDown(Keys.W))
-                Direction.Y -= Speed;
+                Direction.Y -= playerSpeed;
             if (keyboardState.IsKeyDown(Keys.S))
-                Direction.Y += Speed;
+                Direction.Y += playerSpeed;
             if (keyboardState.IsKeyDown(Keys.A))
-                Direction.X -= Speed;
+                Direction.X -= playerSpeed;
             if (keyboardState.IsKeyDown(Keys.D))
-                Direction.X += Speed;
+                Direction.X += playerSpeed;
             return Direction;
         }
 
@@ -95,8 +95,8 @@ namespace ShooterMVC
 
         public static void Update(List<ModelEnemy> enemy, ModelPlayer player)
         {
-            if (player.cooldownLeft > 0)
-                player.cooldownLeft -= Game1.Time;
+            if (player.cooldownBeforeFire > 0)
+                player.cooldownBeforeFire -= Game1.Time;
             else if (player.IsReloading)
                 player.IsReloading = false;
 

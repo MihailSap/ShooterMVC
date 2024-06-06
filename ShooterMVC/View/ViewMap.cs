@@ -7,11 +7,9 @@ namespace ShooterMVC
     internal class ViewMap
     {
         public static void Draw(SpriteBatch spriteBatch, 
-            ContentManager Content, 
+            Texture2D tileTexture,
             RenderTarget2D _target, int[,] tiles, int TileSize)
         {
-            var texture1 = Content.Load<Texture2D>("tile11");
-            var texture2 = Content.Load<Texture2D>("tile22");
             for (int x = 0; x < tiles.GetLength(0); x++)
             {
                 for (int y = 0; y < tiles.GetLength(1); y++)
@@ -20,8 +18,11 @@ namespace ShooterMVC
                         continue;
                     var positionX = y * TileSize;
                     var positionY = x * TileSize;
-                    var currentTexture = tiles[x, y] == 1 ? texture1 : texture2;
-                    spriteBatch.Draw(currentTexture, new Vector2(positionX, positionY), Color.White);
+                    if (tiles[x, y] == 1)
+                    {
+                        spriteBatch.Draw(tileTexture, new Vector2(positionX, positionY), Color.White);
+                    }
+                    
                 }
             }
             spriteBatch.Draw(_target, Vector2.Zero, Color.White);

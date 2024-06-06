@@ -8,19 +8,23 @@ namespace ShooterMVC
     {
         public static Queue<Vector2> GetPath(Vector2 currentPosition, Vector2 goalPosition)
         {
-            var startTile = new Vector2(
-                (int)(currentPosition.X / ModelMap.TileSize) * ModelMap.TileSize + ModelMap.TileSize / 2,
-                (int)(currentPosition.Y / ModelMap.TileSize) * ModelMap.TileSize + ModelMap.TileSize / 2
-            );
-
-            var goalTile = new Vector2(
-                (int)(goalPosition.X / ModelMap.TileSize) * ModelMap.TileSize + ModelMap.TileSize / 2,
-                (int)(goalPosition.Y / ModelMap.TileSize) * ModelMap.TileSize + ModelMap.TileSize / 2
-            );
-
+            var startTile = GetTileCenter(currentPosition);
+            var goalTile = GetTileCenter(goalPosition);
             var path = new Queue<Vector2>(FindPathBFS(startTile, goalTile));
             return path;
         }
+
+        private static Vector2 GetTileCenter(Vector2 position)
+        {
+            var tileSize = ModelMap.TileSize;
+            var halfTileSize = tileSize / 2.0f;
+
+            return new Vector2(
+                ((int)(position.X / tileSize) * tileSize) + halfTileSize,
+                ((int)(position.Y / tileSize) * tileSize) + halfTileSize
+            );
+        }
+
 
         private static List<Vector2> FindPathBFS(Vector2 start, Vector2 goal)
         {
@@ -62,7 +66,6 @@ namespace ShooterMVC
             }
             resultPath.Add(start);
             resultPath.Reverse();
-
             return resultPath;
         }
 
@@ -71,10 +74,8 @@ namespace ShooterMVC
             var neighbors = new List<Vector2>();
             foreach (var direction in GetDirections())
             {
-                var neighborTileCenter = new Vector2(
-                    (int)((current.X + direction.X * ModelMap.TileSize) / ModelMap.TileSize) * ModelMap.TileSize + ModelMap.TileSize / 2,
-                    (int)((current.Y + direction.Y * ModelMap.TileSize) / ModelMap.TileSize) * ModelMap.TileSize + ModelMap.TileSize / 2
-                );
+                var neighborPosition = current + direction * ModelMap.TileSize;
+                var neighborTileCenter = GetTileCenter(neighborPosition);
                 if (IsPossible(neighborTileCenter))
                     neighbors.Add(neighborTileCenter);
             }

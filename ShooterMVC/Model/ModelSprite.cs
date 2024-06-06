@@ -8,7 +8,6 @@ namespace ShooterMVC
         public Vector2 CurrentPosition { get; set; }
         public int Speed { get; set; }
         public float RotationAngle { get; set; }
-        public float Scale { get; set; } = 1f;
         public readonly Vector2 CenterRotate;
         public Texture2D Texture;
         public ModelSprite(Texture2D texture, Vector2 position)

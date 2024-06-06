@@ -8,15 +8,12 @@ namespace ShooterMVC
     internal class ViewCoin
     {
         public static void Draw(SpriteBatch _spritebatch, 
-            string coinsCount, Vector2 textPosition, List<ModelCoin> coins, ContentManager Content)
+            string coinsCount, Vector2 textPosition, List<ModelCoin> coins, SpriteFont spriteFont)
         {
-            var spriteFontCoin = Content.Load<SpriteFont>("font");
-            _spritebatch.DrawString(spriteFontCoin, coinsCount, textPosition, Color.Red);
+            _spritebatch.DrawString(spriteFont, coinsCount, textPosition, Color.Red);
             foreach (var coin in coins)
-            {
                 _spritebatch.Draw(coin.Texture, coin.CurrentPosition,
                     null, Color.White, coin.RotationAngle, coin.CenterRotate, 1, SpriteEffects.None, 1);
-            }
         }
     }
 }

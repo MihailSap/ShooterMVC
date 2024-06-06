@@ -20,26 +20,19 @@ namespace ShooterMVC
 
         public static void Destroy(ModelBullet bullet) => bullet.Lifespan = 0;
 
-        public void CreateBullet(Tuple<Vector2, float> positionAndRotation, 
-            List<ModelBullet> bullets)
-        {
-            if (ControllerPlayer.LeftMouseClicked)
-                bullets.Add(new ModelBullet(bullets[0].Texture, positionAndRotation));
-        }
-
         public static void Update(List<ModelEnemy> enemies, List<ModelBullet> Bullets)
         {
             foreach (var bullet in Bullets)
             {
-                ControllerBullet.UpdatePosition(bullet);
+                UpdatePosition(bullet);
                 bullet.Lifespan -= Game1.Time;
 
                 foreach (var enemy in enemies)
                 {
                     if (enemy.IsAlive && (bullet.CurrentPosition - enemy.CurrentPosition).Length() < 32)
                     {
-                        ControllerEnemy.Destroy(enemy);
-                        ControllerBullet.Destroy(bullet);
+                        ControllerEnemy.Kill(enemy);
+                        Destroy(bullet);
                         break;
                     }
                 }

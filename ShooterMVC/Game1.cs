@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.Direct3D9;
 
 namespace ShooterMVC
 {
@@ -12,9 +13,13 @@ namespace ShooterMVC
         private static Point bounds;
         private ModelMap map;
         private ModelPlayer player;
+
         private Texture2D texturePlayer;
         private Texture2D textureEnemy;
         private Texture2D textureBullet;
+        private Texture2D textureCoin;
+        private Texture2D textureTile;
+        private SpriteFont spriteFont;
 
         public Game1()
         {
@@ -29,6 +34,7 @@ namespace ShooterMVC
         protected override void Initialize()
         {
             graphics.ApplyChanges();
+
             SetTextures();
             bounds = new(ModelMap.Tiles.GetLength(1) * ModelMap.TileSize, ModelMap.Tiles.GetLength(0) * ModelMap.TileSize);
             var center = new Vector2(bounds.X / 2, bounds.Y / 2);
@@ -37,7 +43,7 @@ namespace ShooterMVC
 
             ModelEnemy.SetTextureToModel(textureEnemy);
             ModelBullet.SetTextureToModel(textureBullet);
-            ModelCoin.SetTextureToModel(Content);
+            ModelCoin.SetTextureToModel(textureCoin, spriteFont);
 
             base.Initialize();
         }
@@ -64,13 +70,13 @@ namespace ShooterMVC
             GraphicsDevice.Clear(Color.Bisque);
             spriteBatch.Begin();
 
-            ViewMap.Draw(spriteBatch, Content, map.Target, map.GetTiles(), map.GetTileSize());
+            ViewMap.Draw(spriteBatch, textureTile, map.Target, map.GetTiles(), map.GetTileSize());
             ViewBullet.Draw(spriteBatch, ModelBullet.Bullets);
             ViewEnemy.Draw(spriteBatch, ModelEnemy.EnemyList);
             ViewBulletCounter.Draw(player, spriteBatch, textureBullet);
             ViewPlayer.Draw(player, spriteBatch);
             ViewCoin.Draw(spriteBatch,
-                ModelCoin.coinsCount, ModelCoin.textPosition, ModelCoin.CoinsList, Content);
+                ModelCoin.coinsCount, ModelCoin.textPosition, ModelCoin.CoinsList, spriteFont);
 
             spriteBatch.End();
             base.Draw(gameTime);
@@ -81,6 +87,9 @@ namespace ShooterMVC
             texturePlayer = Content.Load<Texture2D>("big-player-rotated");
             textureEnemy = Content.Load<Texture2D>("big-enemy");
             textureBullet = Content.Load<Texture2D>("big-bullet");
+            textureCoin = Content.Load<Texture2D>("big-coin");
+            spriteFont = Content.Load<SpriteFont>("font");
+            textureTile = Content.Load<Texture2D>("tile11");
         }
 
         public void Restart()
