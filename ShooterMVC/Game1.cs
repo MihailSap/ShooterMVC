@@ -85,7 +85,7 @@ namespace ShooterMVC
         public void SetContent()
         {
             texturePlayer = Content.Load<Texture2D>("player");
-            textureBullet = Content.Load<Texture2D>("bullet");
+            textureBullet = Content.Load<Texture2D>("black-bullet");
             textureEnemy = Content.Load<Texture2D>("enemy");
             textureCoin = Content.Load<Texture2D>("coin");
             textureTile = Content.Load<Texture2D>("tile");
